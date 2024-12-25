@@ -19,7 +19,7 @@ st.set_page_config(page_title="PlantCare AI", layout="wide")
 
 
 
-# Custom CSS with nature-inspired theme
+
 st.markdown("""
     <style>
     /* Plant-Inspired Theme */
@@ -118,40 +118,40 @@ if 'archive' not in st.session_state:
 # PDF Generation Function
 def create_pdf_report(image, analysis):
     try:
-        # Replace problematic characters
+        
         analysis = analysis.replace("’", "'")
         
-        # Initialize PDF
+        
         pdf = FPDF()
         pdf.add_page()
         
-        # Set up the title
+       
         pdf.set_font('Arial', 'B', 16)
         pdf.cell(0, 10, 'PlantCare AI Analysis Report', ln=True, align='C')
         
-        # Add timestamp
+        
         pdf.set_font('Arial', 'I', 10)
         pdf.cell(0, 10, f'Generated on: {datetime.now().strftime("%Y-%m-%d %H:%M:%S")}', ln=True, align='R')
         
-        # Convert image to RGB mode if it's not already
+       
         if image.mode != 'RGB':
             image = image.convert('RGB')
         
-        # Save to temporary file
+        
         temp_img_path = "temp_image.png"
         image.save(temp_img_path, 'PNG', optimize=True)
         
-        # Add image to PDF
+       
         pdf.image(temp_img_path, x=10, w=190)
-        os.remove(temp_img_path)  # Clean up temp file
+        os.remove(temp_img_path)
         
-        # Add spacing and analysis content
+        
         pdf.ln(10)
         pdf.set_font('Arial', 'B', 14)
         pdf.cell(0, 10, 'Analysis Results', ln=True)
         pdf.set_font('Arial', '', 11)
         
-        # Add analysis text
+        
         paragraphs = analysis.split('\n')
         for paragraph in paragraphs:
             if paragraph.strip():
@@ -164,7 +164,7 @@ def create_pdf_report(image, analysis):
                     pdf.multi_cell(0, 6, paragraph.strip())
                     pdf.ln(2)
         
-        # Return PDF content as bytes
+        
         return pdf.output(dest='S').encode('latin-1', errors='replace')
     except Exception as e:
         st.error(f"Error generating PDF: {str(e)}")
